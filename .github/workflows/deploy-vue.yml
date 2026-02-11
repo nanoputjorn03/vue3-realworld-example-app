@@ -14,15 +14,14 @@ jobs:
       # THIS STEP IS NEW AND FIXED
       - name: install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
+        # We removed the hardcoded version 9 to avoid the conflict
 
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-
+          
       - name: build the code
         run: |
           pnpm install --no-frozen-lockfile
