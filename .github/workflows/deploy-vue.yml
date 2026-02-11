@@ -11,24 +11,23 @@ jobs:
       - name: check out the code
         uses: actions/checkout@v4
 
+      # THIS STEP IS NEW AND FIXED
+      - name: install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - name: install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false
-
       - name: build the code
         run: |
           pnpm install --no-frozen-lockfile
           pnpm build
 
-      # FIX: Change owner to ubuntu so we can write files
       - name: set ubuntu owner
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -48,7 +47,6 @@ jobs:
           target: "/var/www/html"
           strip_components: 1
 
-      # FIX: Restore root ownership
       - name: restore root owner
         uses: appleboy/ssh-action@v1.2.0
         with:
